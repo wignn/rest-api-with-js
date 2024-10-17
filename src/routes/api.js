@@ -1,5 +1,6 @@
-import exoress from 'express';
+import express from 'express';
+import { userController } from '../controller/user-controller.js';
 
-const express = express();
-const router = express.Router();
+export const apiRouter = express.Router();
 
+apiRouter.post("/api/users/current", userController.create)
