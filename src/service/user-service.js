@@ -1,6 +1,6 @@
 import { prisma } from "../config/db.js";
 import { v4 as uuidv4 } from "uuid";
-import bcrypt from "bcrypt";
+import bcrypt, { hashSync } from "bcrypt";
 
 export class userService {
   static async userCreate(userData) {
@@ -84,6 +84,7 @@ export class userService {
       if (!user) {
         throw new Error("User not found");
       }
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       await prisma.user.update({
         where: {
@@ -92,7 +93,7 @@ export class userService {
         data: {
           name: userData.name,
           email: userData.email,
-          password: userData.password,
+          password: hashedPassword,
         },
       });
 
@@ -139,7 +140,6 @@ export class userService {
       if (!user) {
         throw new Error("User not found");
       }
-
       return user;
     } catch (e) {
       console.log(e);
@@ -155,24 +155,6 @@ export class userService {
     }
   }
 
-  static async getUserByToken(userData) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          token: userData.token,
-        },
-      });
-
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      return user;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async userLogout(userData) {
     try {
       const user = await prisma.user.findUnique({
@@ -180,11 +162,9 @@ export class userService {
           username: userData.username,
         },
       });
-
       if (!user) {
         throw new Error("User not found");
       }
-
       await prisma.user.update({
         where: {
           username: userData.username,
@@ -193,22 +173,9 @@ export class userService {
           token: null,
         },
       });
-
       return user;
     } catch (e) {
       console.log(e);
     }
-  }
-
-
-
-  static async forgotPassword(userData) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userData.email,
-        tokenV: userData.token,
-      },
-    });
-
   }
 }
