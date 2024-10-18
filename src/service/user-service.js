@@ -72,4 +72,143 @@ export class userService {
       console.log(e);
     }
   }
+
+  static async updateUser(userData) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username: userData.username,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      await prisma.user.update({
+        where: {
+          username: userData.username,
+        },
+        data: {
+          name: userData.name,
+          email: userData.email,
+          password: userData.password,
+        },
+      });
+
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+  static async deleteUser(userData) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username: userData.username,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      await prisma.user.delete({
+        where: {
+          username: userData.username,
+        },
+      });
+
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+  static async getUser(userData) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username: userData.username,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  static async getUsers() {
+    try {
+      const users = await prisma.user.findMany();
+      return users;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  static async getUserByToken(userData) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          token: userData.token,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async userLogout(userData) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username: userData.username,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      await prisma.user.update({
+        where: {
+          username: userData.username,
+        },
+        data: {
+          token: null,
+        },
+      });
+
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+
+  static async forgotPassword(userData) {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userData.email,
+        tokenV: userData.token,
+      },
+    });
+
+  }
 }

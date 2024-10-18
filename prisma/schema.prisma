@@ -21,7 +21,8 @@ model User {
   password String
   role     String  @default("USER")
   token    String? 
-  tokenVal String?
+  verifyToken String?
+  tokenCreatedAt DateTime?
   profile  Profile[]
 }
 
