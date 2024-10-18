@@ -1,5 +1,5 @@
 import { userService } from "../service/user-service.js";
-import { ucv } from "../validation/user-validation.js";
+import { ucv,ulv } from "../validation/user-validation.js";
 
 export class userController {
   static async create(req, res) {
@@ -14,9 +14,9 @@ export class userController {
     }
   }
 
-  static async update(req, res) {
+  static async login(req, res) {
     try {
-      const userData = userValidation.parse(req.body);
+      const userData = ulv.parse(req.body);
       const response = await userService.userLogin(userData);
       res.status(200).json({ data: response });
     } catch (e) {

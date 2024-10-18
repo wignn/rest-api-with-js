@@ -4,3 +4,4 @@ import { userController } from '../controller/user-controller.js';
 export const apiRouter = express.Router();
 
 apiRouter.post("/api/users/current", userController.create)
+apiRouter.patch("/api/users/current", userController.login)

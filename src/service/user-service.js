@@ -32,6 +32,7 @@ export class userService {
           email: userData.email,
           password: hashedPassword,
           username: userData.username,
+          token: null,
         },
       });
       return result;
@@ -39,7 +40,7 @@ export class userService {
       console.log(e);
     }
   }
-  
+
 
   static async userLogin(userData) {
     try {
